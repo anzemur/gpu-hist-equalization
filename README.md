@@ -2,7 +2,7 @@
 
 ![](https://github.com/anzemur/img-hist-equalization/blob/main/example_img.png)
 
-Parallel image histogram equalization on GPU with OpenCL. Program consists of three kernel functions - first one for building the image histogram, second one for calculating the cumulative distribution of the histogram (Blelloch Scan) and the final one for the image correction - equalization.
+Parallel image histogram equalization on GPU with OpenCL. The program consists of three kernel functions - the first one for building the image histogram, the second one for calculating the cumulative distribution of the histogram (Blelloch Scan), and the final one for the image correction - equalization.
 
 
 ## How to use
