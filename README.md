@@ -1,6 +1,7 @@
 # Image histogram equalization
 
 Parallel image histogram equalization on GPU with OpenCL.
+![]()
 
 
 ## How to use
