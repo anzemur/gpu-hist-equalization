@@ -105,7 +105,7 @@ void save_image(char *filename, char *format, int width, int height, int cpp, un
 }
 
 /**
- * Loads kerner file and returns it as string.
+ * Loads kernel file and returns it as a string.
  * @param file_name Kernel file name.
  **/ 
 char* load_kernel_file(char *file_name)
@@ -185,7 +185,6 @@ int main(int argc, char **argv)
     }
 
     // Allocate memory on device and transfer data from host.
-    double data_copy_start = omp_get_wtime();
     cl_mem img_in_d = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,
                                      img.size_cpp*sizeof(unsigned char), img.data, &cl_status);
 
@@ -200,8 +199,6 @@ int main(int argc, char **argv)
 
     cl_mem img_out_d = clCreateBuffer(context, CL_MEM_READ_WRITE,
                                       img.size_cpp*sizeof(unsigned char), NULL, &cl_status);
-
-    double data_copy_end = omp_get_wtime();
 
     // Create kernels and set arguments.
     cl_kernel kernel_img_histogram = clCreateKernel(program, "img_histogram", &cl_status);
@@ -225,7 +222,6 @@ int main(int argc, char **argv)
     cl_status |= clSetKernelArg(kernel_correct_img, 5, sizeof(cl_int), (void *)&img.cpp);
 
     // Divide work & execute kernels.
-    double execution_start = omp_get_wtime();
     size_t local_item_size_hist = WORKGROUP_SIZE;
     size_t num_groups_hist = ((img.size_px - 1) / local_item_size_hist + 1);
 	size_t global_item_size_hist = num_groups_hist * local_item_size_hist;
@@ -242,22 +238,12 @@ int main(int argc, char **argv)
 	size_t global_item_size_correct = num_groups_hist * local_item_size_correct;
     cl_status = clEnqueueNDRangeKernel(command_queue, kernel_correct_img, 1, NULL,						
 								      &global_item_size_correct, &local_item_size_correct, 0, NULL, NULL);
-    double execution_end = omp_get_wtime();
 
 
     // Copy results back to host.
-    double copy_back_start = omp_get_wtime();
     unsigned char *img_out = (unsigned char *)malloc(img.size_cpp * sizeof(unsigned char));
     cl_status = clEnqueueReadBuffer(command_queue, img_out_d, CL_TRUE, 0,						
 							        img.size_cpp*sizeof(unsigned char), img_out, 0, NULL, NULL);
-    double copy_back_end = omp_get_wtime();
-
-    
-    printf("Transfer to device time: %f\n", data_copy_end - data_copy_start);
-    printf("Execution time: %f\n", execution_end - execution_start);
-    printf("Transfer to host time: %f\n", copy_back_end - copy_back_start);
-    printf("Transfer total time: %f\n", copy_back_end - copy_back_start + data_copy_end - data_copy_start);
-    printf("Total time: %f\n", data_copy_end - data_copy_start + copy_back_end - copy_back_start + execution_end - execution_start);
 
     save_image(img.name, img.format, img.width, img.height, img.cpp, img_out);
 
