@@ -1,7 +1,7 @@
 #define HISTOGRAM_BINS 256
 
 /**
- * Calculates image RGB colors historgram.
+ * Calculates image RGB colors histogram.
  * @param img Input image.
  * @param hist Image RGB histogram. Each color has bin size of `HISTOGRAM_BINS`.
  * @param img_size Image size in pixels. Also represents the size of the problem.
@@ -25,11 +25,11 @@ __kernel void img_histogram(__global uchar *img,
 }
 
 /**
- * Calculates comulative distribution (cdfs) of RGB histrograms using Blelloch Scan
+ * Calculates cumulative distribution (cdfs) of RGB histogram using Blelloch Scan
  * algorithm and finds minimum cdfs.
  * @param hist Image RGB histogram.
- * @param cdfs_hist Comulative distributions of RGB historgrams.
- * @param min_cdfs Minimum comulative distributions of each RGB channel.
+ * @param cdfs_hist Cumulative distributions of RGB histogram.
+ * @param min_cdfs Minimum cumulative distributions of each RGB channel.
  * @param local_mem Local memory - every thread in workgroup can access it.
  */
 __kernel void histogram_cdfs(__global uint *hist,
@@ -102,11 +102,11 @@ __kernel void histogram_cdfs(__global uint *hist,
 }
 
 /**
- * Corrects image based on given comulative distributions of RGB historgrams.
+ * Corrects image based on given cumulative distributions of RGB histogram.
  * @param img Input/original image.
  * @param corrected_img Corrected/output image.
- * @param cdfs_hist Comulative distributions of RGB historgrams.
- * @param min_cdfs Comulative distributions of RGB historgrams.
+ * @param cdfs_hist Cumulative distributions of RGB histogram.
+ * @param min_cdfs Cumulative distributions of RGB histogram.
  * @param img_size Image size in pixels.
  * @param img_cpp Image channels per pixel.
  */

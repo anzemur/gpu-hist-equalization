@@ -245,6 +245,7 @@ int main(int argc, char **argv)
     cl_status = clEnqueueReadBuffer(command_queue, img_out_d, CL_TRUE, 0,						
 							        img.size_cpp*sizeof(unsigned char), img_out, 0, NULL, NULL);
 
+    // Save image to a new file.
     save_image(img.name, img.format, img.width, img.height, img.cpp, img_out);
 
     // Release & free.
