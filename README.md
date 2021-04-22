@@ -1,7 +1,9 @@
 # Image histogram equalization
 
+![](https://github.com/anzemur/img-hist-equalization/blob/main/example_img.png)
+
 Parallel image histogram equalization on GPU with OpenCL.
-![]()
+
 
 
 ## How to use
