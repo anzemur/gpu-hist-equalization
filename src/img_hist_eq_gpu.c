@@ -127,7 +127,7 @@ char* load_kernel_file(char *file_name)
 
 int main(int argc, char **argv)
 {
-    char *img_path = argv[1];
+    char *img_path;
     if (argc > 1)
     {
         img_path = argv[1];
