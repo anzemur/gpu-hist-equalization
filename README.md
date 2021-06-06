@@ -1,4 +1,4 @@
-# Histogram equalization
+# GPU Histogram equalization
 
 ![](https://github.com/anzemur/img-hist-equalization/blob/main/example_img.png)
 
